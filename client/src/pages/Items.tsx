@@ -1,12 +1,19 @@
+import { useNavigate } from "react-router-dom"
 import { useItemsQuery } from "./items/queries"
 import { columns } from "./items/columns"
 import { DataTable } from "@/components/ui/data-table"
 import ListParams from "./items/listParams"
 import { useItemsParams } from "./items/useItemsParams"
+import type { ReviewItem } from "@/types/items"
 
 export default function Items() {
+  const navigate = useNavigate()
   const { committedParams } = useItemsParams()
   const { data, isLoading, isError, error } = useItemsQuery(committedParams)
+
+  const handleRowClick = (row: ReviewItem) => {
+    navigate(`/items/${row.review_id}`)
+  }
 
   return (
     <div className="h-dvh grid grid-rows-[auto_1fr] grid-cols-1 overflow-hidden">
@@ -26,6 +33,7 @@ export default function Items() {
               data={data.items}
               searchKey="question"
               searchPlaceholder="Search items"
+              onRowClick={handleRowClick}
             />
           )}
         </div>
