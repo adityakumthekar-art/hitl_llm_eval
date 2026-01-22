@@ -126,3 +126,7 @@
 body {
   font-family: 'Inter', sans-serif;
 }
+
+.d {
+  border: 1px solid red !important;
+}
