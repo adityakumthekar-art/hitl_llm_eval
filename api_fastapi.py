@@ -19,7 +19,8 @@ from datetime import datetime
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query, Path as FastPath, Body
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -48,6 +49,27 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Static files for dashboard SPA
+CLIENT_DIST_PATH = Path(__file__).parent / "client_dist"
+if CLIENT_DIST_PATH.exists():
+    # Mount static assets (JS, CSS, images)
+    app.mount("/dashboard/assets", StaticFiles(directory=CLIENT_DIST_PATH / "assets"), name="dashboard-assets")
+    
+    @app.get("/dashboard/{full_path:path}", tags=["Dashboard"])
+    async def serve_dashboard(full_path: str = ""):
+        """Serve the dashboard SPA. Returns index.html for all routes to enable client-side routing."""
+        # Check if requesting a static file that exists
+        file_path = CLIENT_DIST_PATH / full_path
+        if full_path and file_path.exists() and file_path.is_file():
+            return FileResponse(file_path)
+        # Otherwise return index.html for SPA routing
+        return FileResponse(CLIENT_DIST_PATH / "index.html")
+    
+    @app.get("/dashboard", tags=["Dashboard"])
+    async def serve_dashboard_root():
+        """Serve the dashboard SPA root."""
+        return FileResponse(CLIENT_DIST_PATH / "index.html")
 
 
 # Pydantic models for request/response validation
