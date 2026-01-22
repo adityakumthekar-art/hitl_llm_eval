@@ -20,11 +20,11 @@ export default function Items() {
       <div className="border-b sticky top-0 bg-background flex items-center justify-between border-border px-6 h-16">
         <span className="text-xl font-semibold">Items</span>
       </div>
-      <div className="grid grid-cols-4 min-h-0 overflow-hidden">
-        <div className="col-span-1 border-r border-border bg-neutral-50 overflow-auto">
+      <div className="flex min-h-0 overflow-hidden">
+        <div className="flex-0 basis-96 border-r border-border bg-neutral-50 overflow-auto">
           <ListParams isLoading={isLoading} />
         </div>
-        <div className="col-span-3 p-6 min-h-0 overflow-hidden">
+        <div className="flex-1 p-6 min-h-0 overflow-hidden">
           {isLoading && <p>Loading...</p>}
           {isError && <p>Error: {error.message}</p>}
           {data && (

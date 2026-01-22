@@ -12,5 +12,6 @@ export function useItemsQuery(params: ItemsQueryParams, enabled = true) {
     queryKey: itemsKeys.list(params),
     queryFn: () => getItems(params),
     enabled,
+    refetchOnMount: "always",
   })
 }

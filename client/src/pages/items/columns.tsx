@@ -20,17 +20,6 @@ export const columns: ColumnDef<ReviewItem>[] = [
     ),
   },
   {
-    accessorKey: "question",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Question" />
-    ),
-    cell: ({ row }) => (
-      <div className="max-w-[400px] truncate" title={row.original.question}>
-        {row.original.question}
-      </div>
-    ),
-  },
-  {
     accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
@@ -39,6 +28,7 @@ export const columns: ColumnDef<ReviewItem>[] = [
       const status = row.original.status
       return (
         <Badge
+          className="text-xs"
           variant={status === "reviewed" ? "default" : "secondary"}
         >
           {status}
@@ -49,6 +39,18 @@ export const columns: ColumnDef<ReviewItem>[] = [
       return value.includes(row.getValue(id))
     },
   },
+  {
+    accessorKey: "question",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Question" />
+    ),
+    cell: ({ row }) => (
+      <div className="max-w-[400px] truncate" title={row.original.question}>
+        {row.original.question}
+      </div>
+    ),
+  },
+
   {
     accessorKey: "review_type",
     header: ({ column }) => (

@@ -109,3 +109,24 @@ export interface ItemsResponse {
   items: ReviewItem[]
 }
 
+// Human review update payload
+export interface HumanReviewUpdate {
+  reviewer_name: string
+  correctness_score: number | null
+  safety_policy_score: number | null
+  comments: string | null
+  disagrees_with_deepeval: boolean
+  reviewer_confidence: number
+  overall_score: number | null
+  relevancy_score: number | null
+  faithfulness_score: number | null
+  hallucination_score: number | null
+  bias_score: number | null
+}
+
+// Item update payload
+export interface ItemUpdatePayload {
+  status: ReviewStatus
+  human_review: HumanReviewUpdate
+}
+

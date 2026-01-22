@@ -148,7 +148,7 @@ export default function ListParams({ isLoading }: ListParamsProps) {
                     Reset
                 </Button>
 
-                <Button onClick={handleSearch} className="w-40" size="lg" disabled={isLoading}>
+                <Button onClick={handleSearch} className="w-40" disabled={isLoading}>
                     <Search className="size-4 mr-1" />
                     Search
                 </Button>

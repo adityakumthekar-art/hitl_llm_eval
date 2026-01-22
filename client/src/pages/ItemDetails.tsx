@@ -3,6 +3,7 @@ import { useItemDetailsQuery } from "./items/details/queries"
 import { ArrowLeft, AlertCircle, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import EvaluationParameters from "./items/details/evaluationParameters"
 
 export default function ItemDetails() {
   const { id } = useParams<{ id: string }>()
@@ -24,15 +25,14 @@ export default function ItemDetails() {
       </div>
 
       {/* Content */}
-      <div className="grid grid-cols-4 min-h-0 overflow-hidden">
+      <div className="flex min-h-0 overflow-hidden">
         {/* Left sidebar - Params (empty for now) */}
-        <div className="col-span-1 border-r border-border bg-neutral-50 overflow-auto p-4">
-          <h2 className="text-lg font-semibold mb-4">Parameters</h2>
-          <p className="text-sm text-neutral-600">Coming soon...</p>
+        <div className="flex-0 basis-96 border-r border-border bg-neutral-50 h-full overflow-hidden">
+          <EvaluationParameters />
         </div>
 
         {/* Main content area */}
-        <div className="col-span-3 overflow-auto">
+        <div className="flex-1  overflow-auto">
           {/* Loading state */}
           {isLoading && (
             <div className="flex items-center justify-center h-full">

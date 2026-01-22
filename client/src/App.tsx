@@ -12,6 +12,6 @@ export default function App() {
         <Route path="/items" element={<Items />} />
         <Route path="/items/:id" element={<ItemDetails />} />
       </Routes>
-    </SidebarWrapper>
+    </SidebarWrapper >
   )
 }
