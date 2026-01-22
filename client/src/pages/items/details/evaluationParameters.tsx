@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator"
 import { useItemDetailsQuery, useUpdateItemReviewMutation } from "./queries"
+import { useUserProfile } from "@/hooks/useUserProfile"
 import type { ReviewStatus, HumanReviewUpdate, ReviewItem } from "@/types/items"
 import { RotateCcw, Send, Loader2 } from "lucide-react"
 import { toast } from "sonner"
@@ -15,7 +16,6 @@ import UpdateStatus from "./updateStatus"
 
 interface FormState {
     status: ReviewStatus
-    reviewer_name: string
     correctness_score: number | null
     safety_policy_score: number | null
     comments: string
@@ -31,7 +31,6 @@ interface FormState {
 function getFormFromItemData(itemData: ReviewItem): FormState {
     return {
         status: itemData.status,
-        reviewer_name: itemData.human_review.reviewer_name ?? "",
         correctness_score: itemData.human_review.correctness_score,
         safety_policy_score: null,
         comments: itemData.human_review.comments ?? "",
@@ -70,6 +69,7 @@ interface EvaluationFormProps {
 
 function EvaluationForm({ itemData, itemId }: EvaluationFormProps) {
     const navigate = useNavigate()
+    const { profile } = useUserProfile()
     const [form, setForm] = useState<FormState>(() => getFormFromItemData(itemData))
 
     // Reset form when itemData changes (e.g., after refetch)
@@ -96,7 +96,7 @@ function EvaluationForm({ itemData, itemId }: EvaluationFormProps) {
         const payload: { status: ReviewStatus; human_review: HumanReviewUpdate } = {
             status: "reviewed",
             human_review: {
-                reviewer_name: form.reviewer_name,
+                reviewer_name: profile?.name ?? "",
                 correctness_score: form.correctness_score,
                 safety_policy_score: form.safety_policy_score,
                 comments: form.comments || null,
@@ -129,13 +129,14 @@ function EvaluationForm({ itemData, itemId }: EvaluationFormProps) {
 
             <div className="flex-1 p-4 overflow-auto space-y-4">
 
-                {/* Reviewer Name */}
+                {/* Reviewer Name (from profile) */}
                 <div className="space-y-2">
-                    <Label className="text-sm font-medium">Reviewer Name</Label>
+                    <Label className="text-sm font-medium">Reviewer</Label>
                     <Input
-                        value={form.reviewer_name}
-                        onChange={(e) => updateField("reviewer_name", e.target.value)}
-                        placeholder="Enter your name"
+                        value={profile?.name ?? ""}
+                        readOnly
+                        disabled
+                        className="bg-muted"
                     />
                 </div>
 

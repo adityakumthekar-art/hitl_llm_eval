@@ -10,22 +10,25 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useUpdateItemReviewMutation } from "./queries"
+import { useUserProfile } from "@/hooks/useUserProfile"
 import type { ReviewStatus, HumanReviewUpdate } from "@/types/items"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
 
-const DEFAULT_HUMAN_REVIEW: HumanReviewUpdate = {
-    reviewer_name: "",
-    correctness_score: null,
-    safety_policy_score: null,
-    comments: null,
-    disagrees_with_deepeval: false,
-    reviewer_confidence: 0.5,
-    overall_score: null,
-    relevancy_score: null,
-    faithfulness_score: null,
-    hallucination_score: null,
-    bias_score: null,
+function getDefaultHumanReview(reviewerName: string): HumanReviewUpdate {
+    return {
+        reviewer_name: reviewerName,
+        correctness_score: null,
+        safety_policy_score: null,
+        comments: null,
+        disagrees_with_deepeval: false,
+        reviewer_confidence: 0.5,
+        overall_score: null,
+        relevancy_score: null,
+        faithfulness_score: null,
+        hallucination_score: null,
+        bias_score: null,
+    }
 }
 
 type QuickStatus = "pending" | "skipped"
@@ -33,6 +36,7 @@ type QuickStatus = "pending" | "skipped"
 export default function UpdateStatus() {
     const { id } = useParams<{ id: string }>()
     const navigate = useNavigate()
+    const { profile } = useUserProfile()
     const [selectedStatus, setSelectedStatus] = useState<QuickStatus | null>(null)
 
     const handleSuccess = (status: ReviewStatus) => {
@@ -48,7 +52,7 @@ export default function UpdateStatus() {
         updateMutation.mutate(
             {
                 status: selectedStatus,
-                human_review: DEFAULT_HUMAN_REVIEW,
+                human_review: getDefaultHumanReview(profile?.name ?? ""),
             },
             {
                 onSuccess: () => handleSuccess(selectedStatus),

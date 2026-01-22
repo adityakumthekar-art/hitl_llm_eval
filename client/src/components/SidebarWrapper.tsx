@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
-import { LayoutDashboard, Package } from "lucide-react"
+import { LayoutDashboard, Package, User } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -16,6 +16,7 @@ import logo from "@/assets/logo.svg"
 const navItems = [
     { title: "Dashboard", url: "/", icon: LayoutDashboard },
     { title: "Items", url: "/items", icon: Package },
+    { title: "Profile", url: "/profile", icon: User },
 ]
 
 export default function SidebarWrapper({ children }: { children: React.ReactNode }) {
