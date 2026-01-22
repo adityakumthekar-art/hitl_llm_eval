@@ -7,10 +7,10 @@ export const itemsKeys = {
   list: (params: ItemsQueryParams) => [...itemsKeys.all, "list", params] as const,
 }
 
-export function useItemsQuery(params: ItemsQueryParams) {
+export function useItemsQuery(params: ItemsQueryParams, enabled = true) {
   return useQuery({
     queryKey: itemsKeys.list(params),
     queryFn: () => getItems(params),
+    enabled,
   })
 }
-

@@ -1,28 +1,34 @@
 import { useItemsQuery } from "./items/queries"
+import { columns } from "./items/columns"
+import { DataTable } from "@/components/ui/data-table"
+import ListParams from "./items/listParams"
+import { useItemsParams } from "./items/useItemsParams"
 
 export default function Items() {
-  const { data, isLoading, isError, error } = useItemsQuery({ page: 1, per_page: 10 })
+  const { committedParams } = useItemsParams()
+  const { data, isLoading, isError, error } = useItemsQuery(committedParams)
 
   return (
-    <div>
-      <div className="border-b flex items-center justify-between border-border px-6 h-16">
+    <div className="h-dvh grid grid-rows-[auto_1fr] grid-cols-1 overflow-hidden">
+      <div className="border-b sticky top-0 bg-background flex items-center justify-between border-border px-6 h-16">
         <span className="text-xl font-semibold">Items</span>
       </div>
-      <div className="p-6">
-        {isLoading && <p>Loading...</p>}
-        {isError && <p>Error: {error.message}</p>}
-        {data && (
-          <ul className="space-y-2">
-            {data.items.map((item) => (
-              <li key={item.review_id} className="border border-border rounded p-3">
-                <p className="font-medium">{item.question}</p>
-                <p className="text-sm text-muted-foreground">
-                  Status: {item.status} | Type: {item.review_type_label}
-                </p>
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className="grid grid-cols-4 min-h-0 overflow-hidden">
+        <div className="col-span-1 border-r border-border bg-neutral-50 overflow-auto">
+          <ListParams isLoading={isLoading} />
+        </div>
+        <div className="col-span-3 p-6 min-h-0 overflow-hidden">
+          {isLoading && <p>Loading...</p>}
+          {isError && <p>Error: {error.message}</p>}
+          {data && (
+            <DataTable
+              columns={columns}
+              data={data.items}
+              searchKey="question"
+              searchPlaceholder="Search items"
+            />
+          )}
+        </div>
       </div>
     </div>
   )

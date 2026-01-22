@@ -77,10 +77,31 @@ export interface ReviewItem {
   safety_policy: SafetyPolicy
 }
 
-// Pagination params for the request
+// Status filter options
+export type StatusFilter = "pending" | "reviewed" | "skipped" | "all"
+
+// Review type filter options
+export type ReviewTypeFilter = "ambiguous" | "good_sample" | "bad_sample" | "all"
+
+// Safety filter options
+export type SafetyFilter = "unsafe" | "safe" | "all"
+
+// Full query params for items list
 export interface ItemsQueryParams {
+  // Pagination
   page: number
   per_page: number
+  // Filters
+  status: StatusFilter | null
+  review_type: ReviewTypeFilter | null
+  safety_filter: SafetyFilter | null
+  // Sampling
+  sample_good: number | null
+  sample_bad: number | null
+  high_score_threshold: number
+  low_score_threshold: number
+  random_seed: number | null
+  sample_only: boolean
 }
 
 // API response for items list
